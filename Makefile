@@ -23,7 +23,7 @@ SSL_URL = http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$(SSL_VERSION).ta
 SSL_TAR = /tmp/ssl.tar.gz
 SSL_DIR = /tmp/ssl
 SSL_TARGET = /tmp/ssl-install
-SSL_PATH = --with-ssl=$(SSL_TARGET)/usr/local/
+SSL_PATH = --with-ssl-dir=$(SSL_TARGET)/usr/local/
 
 .PHONY : default submodule manual container build version push local
 
