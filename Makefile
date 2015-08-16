@@ -18,8 +18,8 @@ ZLIB_DIR = /tmp/zlib
 ZLIB_TARGET = /tmp/zlib-install
 ZLIB_PATH = --with-zlib=$(ZLIB_TARGET)/usr/local/
 
-SSL_VERSION = 2.2.2
-SSL_URL = http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$(SSL_VERSION).tar.gz
+SSL_VERSION = 1.0.2d
+SSL_URL = http://openssl.org/source/openssl-$(SSL_VERSION).tar.gz
 SSL_TAR = /tmp/ssl.tar.gz
 SSL_DIR = /tmp/ssl
 SSL_TARGET = /tmp/ssl-install
