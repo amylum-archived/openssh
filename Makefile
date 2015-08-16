@@ -16,14 +16,14 @@ ZLIB_URL = http://zlib.net/zlib-$(ZLIB_VERSION).tar.gz
 ZLIB_TAR = /tmp/zlib.tar.gz
 ZLIB_DIR = /tmp/zlib
 ZLIB_TARGET = /tmp/zlib-install
-ZLIB_PATH = --with-zlib=$(ZLIB_TARGET)/usr/local/
+ZLIB_PATH = --with-zlib=$(ZLIB_TARGET)/usr/local
 
 SSL_VERSION = 1.0.2d
 SSL_URL = http://openssl.org/source/openssl-$(SSL_VERSION).tar.gz
 SSL_TAR = /tmp/ssl.tar.gz
 SSL_DIR = /tmp/ssl
 SSL_TARGET = /tmp/ssl-install
-SSL_PATH = --with-ssl-dir=$(SSL_TARGET)/usr/local/
+SSL_PATH = --with-ssl-dir=$(SSL_TARGET)/usr/local
 
 .PHONY : default submodule manual container build version push local
 
