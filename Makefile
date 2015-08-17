@@ -5,8 +5,7 @@ BUILD_DIR = /tmp/$(PACKAGE)-build
 RELEASE_DIR = /tmp/$(PACKAGE)-release
 RELEASE_FILE = /tmp/$(PACKAGE).tar.gz
 PATH_FLAGS = --prefix=$(RELEASE_DIR) --sbindir=$(RELEASE_DIR)/usr/bin --bindir=$(RELEASE_DIR)/usr/bin --mandir=$(RELEASE_DIR)/usr/share/man --libdir=$(RELEASE_DIR)/usr/lib --includedir=$(RELEASE_DIR)/usr/include --docdir=$(RELEASE_DIR)/usr/share/doc/$(PACKAGE) --sysconfdir=/etc/ssh --libexecdir=/usr/lib/ssh --with-pid-dir=/run
-CONF_FLAGS = --with-privsep-user=nobody --with-cflags='-static'
-CFLAGS = -static -static-libgcc -Wl,-static -lc
+CONF_FLAGS = --with-privsep-user=nobody --with-ldflags=-static
 
 PACKAGE_VERSION = $$(awk '/^Version/ {print $2}' upstream/contrib/suse/openssh.spec)
 PATCH_VERSION = $$(cat version)
