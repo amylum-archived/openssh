@@ -48,7 +48,7 @@ deps:
 
 	curl -sLo $(SSL_TAR) $(SSL_URL)
 	tar -x -C $(SSL_DIR) -f $(SSL_TAR) --strip-components=1
-	cd $(SSL_DIR) && ./configure && make DESTDIR=$(SSL_TARGET) install
+	cd $(SSL_DIR) && ./config && make DESTDIR=$(SSL_TARGET) install
 
 
 build: submodule deps
