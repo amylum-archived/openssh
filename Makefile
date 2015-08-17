@@ -56,7 +56,7 @@ build: submodule deps
 	rm -rf $(BUILD_DIR)
 	cp -R upstream $(BUILD_DIR)
 	cd $(BUILD_DIR) && autoheader && autoconf
-	cd $(BUILD_DIR) && CC=musl-gcc CFLAGS=$(CFLAGS) ./configure $(PATH_FLAGS) $(CONF_FLAGS) $(ZLIB_PATH) $(SSL_PATH)
+	cd $(BUILD_DIR) && CC=musl-gcc CFLAGS="$(CFLAGS)" ./configure $(PATH_FLAGS) $(CONF_FLAGS) $(ZLIB_PATH) $(SSL_PATH)
 	cd $(BUILD_DIR) && make install
 	mkdir -p $(RELEASE_DIR)/usr/share/licenses/$(PACKAGE)
 	cp $(BUILD_DIR)/LICENCE $(RELEASE_DIR)/usr/share/licenses/$(PACKAGE)/LICENSE
