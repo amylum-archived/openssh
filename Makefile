@@ -44,11 +44,11 @@ deps:
 
 	curl -sLo $(ZLIB_TAR) $(ZLIB_URL)
 	tar -x -C $(ZLIB_DIR) -f $(ZLIB_TAR) --strip-components=1
-	cd $(ZLIB_DIR) && ./configure && make DESTDIR=$(ZLIB_TARGET) install
+	cd $(ZLIB_DIR) && CC=musl-gcc ./configure && make DESTDIR=$(ZLIB_TARGET) install
 
 	curl -sLo $(SSL_TAR) $(SSL_URL)
 	tar -x -C $(SSL_DIR) -f $(SSL_TAR) --strip-components=1
-	cd $(SSL_DIR) && ./config && make DESTDIR=$(SSL_TARGET) install
+	cd $(SSL_DIR) && CC=musl-gcc ./config && make DESTDIR=$(SSL_TARGET) install
 
 
 build: submodule deps
