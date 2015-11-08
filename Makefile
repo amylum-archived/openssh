@@ -15,13 +15,13 @@ ZLIB_VERSION = 1.2.8-1
 ZLIB_URL = https://github.com/amylum/zlib/releases/download/$(ZLIB_VERSION)/zlib.tar.gz
 ZLIB_TAR = zlib.tar.gz
 ZLIB_DIR = /tmp/zlib
-ZLIB_PATH = --with-zlib-dir=$(ZLIB_DIR)
+ZLIB_PATH = --with-zlib=$(ZLIB_DIR)/usr
 
 SSL_VERSION = 1.0.2d-1
 SSL_URL = https://github.com/amylum/openssl/releases/download/$(SSL_VERSION)/openssl.tar.gz
 SSL_TAR = /tmp/ssl.tar.gz
 SSL_DIR = /tmp/ssl
-SSL_PATH = --with-ssl-dir=$(SSL_DIR)
+SSL_PATH = --with-ssl-dir=$(SSL_DIR)/usr
 
 .PHONY : default submodule deps manual container build version push local
 
