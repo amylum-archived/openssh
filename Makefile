@@ -11,21 +11,13 @@ PACKAGE_VERSION = $$(awk '/^Version/ {print $$2}' upstream/contrib/suse/openssh.
 PATCH_VERSION = $$(cat version)
 VERSION = $(PACKAGE_VERSION)-$(PATCH_VERSION)
 
-ZLIB_VERSION = 1.2.8
-ZLIB_URL = http://zlib.net/zlib-$(ZLIB_VERSION).tar.gz
-ZLIB_TAR = /tmp/zlib.tar.gz
-ZLIB_DIR = /tmp/zlib
-ZLIB_TARGET = /tmp/zlib-install
-ZLIB_PATH = --with-zlib=$(ZLIB_TARGET)/usr/local
-
-SSL_VERSION = 1.0.2d
-SSL_URL = http://openssl.org/source/openssl-$(SSL_VERSION).tar.gz
+SSL_VERSION = 1.0.2d-1
+SSL_URL = https://github.com/amylum/openssl/releases/download/$(SSL_VERSION)/openssl.tar.gz
 SSL_TAR = /tmp/ssl.tar.gz
 SSL_DIR = /tmp/ssl
-SSL_TARGET = /tmp/ssl-install
-SSL_PATH = --with-ssl-dir=$(SSL_TARGET)/usr/local
+SSL_PATH = --with-ssl-dir=$(SSL_TARGET)/tmp/ssl
 
-.PHONY : default submodule manual container build version push local
+.PHONY : default submodule deps manual container build version push local
 
 default: submodule container
 
@@ -39,17 +31,10 @@ container:
 	./meta/launch
 
 deps:
-	rm -rf $(ZLIB_DIR) $(ZLIB_TAR) $(SSL_DIR) $(SSL_TAR)
-	mkdir $(ZLIB_DIR) $(SSL_DIR)
-
-	curl -sLo $(ZLIB_TAR) $(ZLIB_URL)
-	tar -x -C $(ZLIB_DIR) -f $(ZLIB_TAR) --strip-components=1
-	cd $(ZLIB_DIR) && CC=musl-gcc ./configure && make DESTDIR=$(ZLIB_TARGET) install
-
+	rm -rf $(SSL_DIR) $(SSL_TAR)
+	mkdir $(SSL_DIR)
 	curl -sLo $(SSL_TAR) $(SSL_URL)
-	tar -x -C $(SSL_DIR) -f $(SSL_TAR) --strip-components=1
-	cd $(SSL_DIR) && CC=musl-gcc ./config && make DESTDIR=$(SSL_TARGET) install
-
+	tar -x -C $(SSL_DIR) -f $(SSL_TAR)
 
 build: submodule deps
 	rm -rf $(BUILD_DIR)
