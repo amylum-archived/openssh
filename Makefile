@@ -11,6 +11,12 @@ PACKAGE_VERSION = $$(awk '/^Version/ {print $$2}' upstream/contrib/suse/openssh.
 PATCH_VERSION = $$(cat version)
 VERSION = $(PACKAGE_VERSION)-$(PATCH_VERSION)
 
+ZLIB_VERSION = 1.2.8-1
+ZLIB_URL = https://github.com/amylum/zlib/releases/download/$(ZLIB_VERSION)/zlib.tar.gz
+ZLIB_TAR = zlib.tar.gz
+ZLIB_DIR = /tmp/zlib
+ZLIB_PATH = -I$(ZLIB_DIR)/usr/include -L$(ZLIB_DIR)/usr/lib
+
 SSL_VERSION = 1.0.2d-1
 SSL_URL = https://github.com/amylum/openssl/releases/download/$(SSL_VERSION)/openssl.tar.gz
 SSL_TAR = /tmp/ssl.tar.gz
@@ -35,6 +41,10 @@ deps:
 	mkdir $(SSL_DIR)
 	curl -sLo $(SSL_TAR) $(SSL_URL)
 	tar -x -C $(SSL_DIR) -f $(SSL_TAR)
+	rm -rf $(ZLIB_DIR) $(ZLIB_TAR)
+	mkdir $(ZLIB_DIR)
+	curl -sLo $(ZLIB_TAR) $(ZLIB_URL)
+	tar -x -C $(ZLIB_DIR) -f $(ZLIB_TAR)
 
 build: submodule deps
 	rm -rf $(BUILD_DIR)
