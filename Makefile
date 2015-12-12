@@ -17,7 +17,7 @@ ZLIB_TAR = zlib.tar.gz
 ZLIB_DIR = /tmp/zlib
 ZLIB_PATH = --with-zlib=$(ZLIB_DIR)/usr
 
-SSL_VERSION = 1.0.2d-1
+SSL_VERSION = 1.0.2e-2
 SSL_URL = https://github.com/amylum/openssl/releases/download/$(SSL_VERSION)/openssl.tar.gz
 SSL_TAR = /tmp/ssl.tar.gz
 SSL_DIR = /tmp/ssl
