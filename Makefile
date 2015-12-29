@@ -17,11 +17,11 @@ ZLIB_TAR = zlib.tar.gz
 ZLIB_DIR = /tmp/zlib
 ZLIB_PATH = --with-zlib=$(ZLIB_DIR)/usr
 
-SSL_VERSION = 1.0.2e-2
-SSL_URL = https://github.com/amylum/openssl/releases/download/$(SSL_VERSION)/openssl.tar.gz
-SSL_TAR = /tmp/ssl.tar.gz
-SSL_DIR = /tmp/ssl
-SSL_PATH = --with-ssl-dir=$(SSL_DIR)/usr
+OPENSSL_VERSION = 1.0.2e-2
+OPENSSL_URL = https://github.com/amylum/openssl/releases/download/$(OPENSSL_VERSION)/openssl.tar.gz
+OPENSSL_TAR = /tmp/openssl.tar.gz
+OPENSSL_DIR = /tmp/openssl
+OPENSSL_PATH = --with-ssl-dir=$(OPENSSL_DIR)/usr
 
 .PHONY : default submodule deps manual container build version push local
 
@@ -37,10 +37,10 @@ container:
 	./meta/launch
 
 deps:
-	rm -rf $(SSL_DIR) $(SSL_TAR)
-	mkdir $(SSL_DIR)
-	curl -sLo $(SSL_TAR) $(SSL_URL)
-	tar -x -C $(SSL_DIR) -f $(SSL_TAR)
+	rm -rf $(OPENSSL_DIR) $(OPENSSL_TAR)
+	mkdir $(OPENSSL_DIR)
+	curl -sLo $(OPENSSL_TAR) $(OPENSSL_URL)
+	tar -x -C $(OPENSSL_DIR) -f $(OPENSSL_TAR)
 	rm -rf $(ZLIB_DIR) $(ZLIB_TAR)
 	mkdir $(ZLIB_DIR)
 	curl -sLo $(ZLIB_TAR) $(ZLIB_URL)
@@ -50,7 +50,7 @@ build: submodule deps
 	rm -rf $(BUILD_DIR)
 	cp -R upstream $(BUILD_DIR)
 	cd $(BUILD_DIR) && autoheader && autoconf
-	cd $(BUILD_DIR) && CC=musl-gcc CFLAGS="$(CFLAGS)" ./configure $(PATH_FLAGS) $(CONF_FLAGS) $(ZLIB_PATH) $(SSL_PATH)
+	cd $(BUILD_DIR) && CC=musl-gcc CFLAGS="$(CFLAGS)" ./configure $(PATH_FLAGS) $(CONF_FLAGS) $(ZLIB_PATH) $(OPENSSL_PATH)
 	cd $(BUILD_DIR) && make install
 	mkdir -p $(RELEASE_DIR)/usr/share/licenses/$(PACKAGE)
 	cp $(BUILD_DIR)/LICENCE $(RELEASE_DIR)/usr/share/licenses/$(PACKAGE)/LICENSE
