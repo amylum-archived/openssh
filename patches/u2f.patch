@@ -943,6 +943,26 @@ index 67c4486..ba12533 100644
  # Check whether user wants to use ldns
  LDNS_MSG="no"
  AC_ARG_WITH(ldns,
+@@ -2212,7 +2265,7 @@ AC_ARG_WITH([ssl-dir],
+ 		fi
+ 	]
+ )
+-LIBS="-lcrypto $LIBS"
++LIBS="-lcrypto -lssl $LIBS"
+ AC_TRY_LINK_FUNC([RAND_add], [AC_DEFINE([HAVE_OPENSSL], [1],
+ 	[Define if your ssl headers are included
+ 	with #include <openssl/header.h>])],
+@@ -2295,8 +2348,8 @@ AC_RUN_IFELSE(
+ 		ssl_library_ver=`cat conftest.ssllibver`
+ 		# Check version is supported.
+ 		case "$ssl_library_ver" in
+-			0090[[0-7]]*|009080[[0-5]]*)
+-				AC_MSG_ERROR([OpenSSL >= 0.9.8f required])
++			0090*)
++				AC_MSG_ERROR([OpenSSL >= 1.0.0 required])
+ 		                ;;
+ 		        *) ;;
+ 		esac
 @@ -4829,6 +4882,7 @@ echo "                 KerberosV support: $KRB5_MSG"
  echo "                   SELinux support: $SELINUX_MSG"
  echo "                 Smartcard support: $SCARD_MSG"
@@ -1344,6 +1364,24 @@ index 26e9681..dc241ae 100644
  #endif
  
  	/* Initialize the command to execute on remote host. */
+diff --git a/ssh_config.5 b/ssh_config.5
+index f9ede7a..6fe10f2 100644
+--- a/ssh_config.5
++++ b/ssh_config.5
+@@ -1419,6 +1419,13 @@ is not specified, it defaults to
+ .Dq any .
+ The default is
+ .Dq any:any .
++.It Cm U2FMode
++Specifies which mode the U2F authentication method should use. Can be either
++.Dq authentication
++or
++.Dq registration .
++The default is
++.Dq authentication .
+ .It Cm UsePrivilegedPort
+ Specifies whether to use a privileged port for outgoing connections.
+ The argument must be
 diff --git a/sshconnect.c b/sshconnect.c
 index ac09eae..1c07037 100644
 --- a/sshconnect.c
@@ -1631,6 +1669,36 @@ index 481d001..b6556ef 100644
  #endif
  
  	/* If requested, redirect the logs to the specified logfile. */
+diff --git a/sshd_config.5 b/sshd_config.5
+index fd44abe..7d5cec0 100644
+--- a/sshd_config.5
++++ b/sshd_config.5
+@@ -1293,6 +1293,25 @@ for authentication using
+ .Cm TrustedUserCAKeys .
+ For more details on certificates, see the CERTIFICATES section in
+ .Xr ssh-keygen 1 .
++.It Cm U2FAuthentication
++Specifies whether user authentication based on U2F (Universal Second Factor) is allowed. The default is
++.Dq no .
++Note that U2F authentication should never be used alone, so specify for example:
++.Bd -literal -offset indent
++U2FAuthentication yes
++AuthenticationMethods pubkey,u2f
++.Ed
++.Pp
++That way, pubkey authentication will be performed and U2F will be required
++after pubkey authentication was successful. In case the user in question does
++not have any ssh-u2f lines in their authorized_keys file, the u2f
++authentication method will just return success.
++.Pp
++In order to register a U2F security key, enable this option as outlined above.
++Then, run
++.Dq ssh -o U2FMode=registration server.example.net
++in order to obtain a ssh-u2f line which you can then append to your
++authorized_keys.
+ .It Cm UseDNS
+ Specifies whether
+ .Xr sshd 8
 diff --git a/sshkey.c b/sshkey.c
 index fdd0c8a..18196ce 100644
 --- a/sshkey.c
