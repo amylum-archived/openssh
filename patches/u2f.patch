@@ -1344,24 +1344,6 @@ index 26e9681..dc241ae 100644
  #endif
  
  	/* Initialize the command to execute on remote host. */
-diff --git a/ssh_config.5 b/ssh_config.5
-index f9ede7a..6fe10f2 100644
---- a/ssh_config.5
-+++ b/ssh_config.5
-@@ -1419,6 +1419,13 @@ is not specified, it defaults to
- .Dq any .
- The default is
- .Dq any:any .
-+.It Cm U2FMode
-+Specifies which mode the U2F authentication method should use. Can be either
-+.Dq authentication
-+or
-+.Dq registration .
-+The default is
-+.Dq authentication .
- .It Cm UsePrivilegedPort
- Specifies whether to use a privileged port for outgoing connections.
- The argument must be
 diff --git a/sshconnect.c b/sshconnect.c
 index ac09eae..1c07037 100644
 --- a/sshconnect.c
@@ -1420,9 +1402,9 @@ index 68f7f4f..b0deaa3 100644
  
  #include "xmalloc.h"
 @@ -70,6 +76,7 @@
- #include "pathnames.h"
  #include "uidswap.h"
  #include "hostfile.h"
+ #include "ssherr.h"
 +#include "u2f.h"
  
  #ifdef GSSAPI
@@ -1662,9 +1644,9 @@ index fdd0c8a..18196ce 100644
   * Redistribution and use in source and binary forms, with or without
   * modification, are permitted provided that the following conditions
 @@ -52,6 +53,10 @@
- #include "digest.h"
  #define SSHKEY_INTERNAL
  #include "sshkey.h"
+ #include "match.h"
 +#include "key.h"
 +#include "hostfile.h"
 +#include "auth.h"
@@ -1804,9 +1786,9 @@ index 450b30c..8f1d6a2 100644
 --- a/sshkey.h
 +++ b/sshkey.h
 @@ -64,6 +64,7 @@ enum sshkey_types {
+ 	KEY_DSA_CERT,
+ 	KEY_ECDSA_CERT,
  	KEY_ED25519_CERT,
- 	KEY_RSA_CERT_V00,
- 	KEY_DSA_CERT_V00,
 +	KEY_U2F,
  	KEY_UNSPEC
  };
