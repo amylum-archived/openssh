@@ -944,25 +944,26 @@ index 67c4486..ba12533 100644
  LDNS_MSG="no"
  AC_ARG_WITH(ldns,
 @@ -2212,7 +2265,7 @@ AC_ARG_WITH([ssl-dir],
- 		fi
  	]
  )
--LIBS="-lcrypto $LIBS"
-+LIBS="-lcrypto -lssl $LIBS"
- AC_TRY_LINK_FUNC([RAND_add], [AC_DEFINE([HAVE_OPENSSL], [1],
- 	[Define if your ssl headers are included
- 	with #include <openssl/header.h>])],
+
+ if test "x$openssl" = "xyes" ; then
+-	LIBS="-lcrypto $LIBS"
++	LIBS="-lcrypto -lssl $LIBS"
+ 	AC_TRY_LINK_FUNC([RAND_add], [AC_DEFINE([HAVE_OPENSSL], [1],
+ 		[Define if your ssl headers are included
+ 		with #include <openssl/header.h>])],
 @@ -2295,8 +2348,8 @@ AC_RUN_IFELSE(
- 		ssl_library_ver=`cat conftest.ssllibver`
- 		# Check version is supported.
- 		case "$ssl_library_ver" in
--			0090[[0-7]]*|009080[[0-5]]*)
--				AC_MSG_ERROR([OpenSSL >= 0.9.8f required])
-+			0090*)
-+				AC_MSG_ERROR([OpenSSL >= 1.0.0 required])
- 		                ;;
- 		        *) ;;
- 		esac
+ 			ssl_library_ver=`cat conftest.ssllibver`
+ 			# Check version is supported.
+ 			case "$ssl_library_ver" in
+-				0090[[0-7]]*|009080[[0-5]]*)
+-					AC_MSG_ERROR([OpenSSL >= 0.9.8f required])
++				0090*)
++					AC_MSG_ERROR([OpenSSL >= 1.0.0 required])
+ 			                ;;
+ 			        *) ;;
+ 			esac
 @@ -4829,6 +4882,7 @@ echo "                 KerberosV support: $KRB5_MSG"
  echo "                   SELinux support: $SELINUX_MSG"
  echo "                 Smartcard support: $SCARD_MSG"
@@ -1379,9 +1380,9 @@ index f9ede7a..6fe10f2 100644
 +.Dq registration .
 +The default is
 +.Dq authentication .
- .It Cm UsePrivilegedPort
- Specifies whether to use a privileged port for outgoing connections.
- The argument must be
+ .It Cm UpdateHostKeys
+ Specifies whether
+ .Xr ssh 1
 diff --git a/sshconnect.c b/sshconnect.c
 index ac09eae..1c07037 100644
 --- a/sshconnect.c
