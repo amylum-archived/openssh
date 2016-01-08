@@ -104,9 +104,9 @@ index 06be3d5..4ae423c 100644
 --- a/Makefile.in
 +++ b/Makefile.in
 @@ -101,6 +101,7 @@ SSHDOBJS=sshd.o auth-rhosts.o auth-passwd.o auth-rsa.o auth-rh-rsa.o \
+ 	auth-skey.o auth-bsdauth.o auth2-hostbased.o auth2-kbdint.o \
  	auth2-none.o auth2-passwd.o auth2-pubkey.o \
- 	monitor_mm.o monitor.o monitor_wrap.o kexdhs.o kexgexs.o kexecdhs.o \
- 	kexc25519s.o auth-krb5.o \
+ 	monitor_mm.o monitor.o monitor_wrap.o auth-krb5.o \
 +	auth-u2f.o \
  	auth2-gss.o gss-serv.o gss-serv-krb5.o \
  	loginrec.o auth-pam.o auth-shadow.o auth-sia.o md5crypt.o \
@@ -943,26 +943,6 @@ index 67c4486..ba12533 100644
  # Check whether user wants to use ldns
  LDNS_MSG="no"
  AC_ARG_WITH(ldns,
-@@ -2212,7 +2265,7 @@ AC_ARG_WITH([ssl-dir],
- 		fi
- 	]
- )
--LIBS="-lcrypto $LIBS"
-+LIBS="-lcrypto -lssl $LIBS"
- AC_TRY_LINK_FUNC([RAND_add], [AC_DEFINE([HAVE_OPENSSL], [1],
- 	[Define if your ssl headers are included
- 	with #include <openssl/header.h>])],
-@@ -2295,8 +2348,8 @@ AC_RUN_IFELSE(
- 		ssl_library_ver=`cat conftest.ssllibver`
- 		# Check version is supported.
- 		case "$ssl_library_ver" in
--			0090[[0-7]]*|009080[[0-5]]*)
--				AC_MSG_ERROR([OpenSSL >= 0.9.8f required])
-+			0090*)
-+				AC_MSG_ERROR([OpenSSL >= 1.0.0 required])
- 		                ;;
- 		        *) ;;
- 		esac
 @@ -4829,6 +4882,7 @@ echo "                 KerberosV support: $KRB5_MSG"
  echo "                   SELinux support: $SELINUX_MSG"
  echo "                 Smartcard support: $SCARD_MSG"
@@ -1264,9 +1244,9 @@ index b7f3294..3c2826a 100644
  		options->gss_cleanup_creds = 1;
  	if (options->password_authentication == -1)
 @@ -353,6 +359,7 @@ typedef enum {
- 	sHostbasedUsesNameFromPacketOnly, sClientAliveInterval,
- 	sClientAliveCountMax, sAuthorizedKeysFile,
- 	sGssAuthentication, sGssCleanupCreds, sAcceptEnv, sPermitTunnel,
+ 	sClientAliveInterval, sClientAliveCountMax, sAuthorizedKeysFile,
+ 	sGssAuthentication, sGssCleanupCreds, sGssStrictAcceptor,
+ 	sAcceptEnv, sPermitTunnel,
 +	sU2FAuthentication,
  	sMatch, sPermitOpen, sForceCommand, sChrootDirectory,
  	sUsePrivilegeSeparation, sAllowAgentForwarding,
@@ -1333,9 +1313,9 @@ index fa5cfb2..d3ea713 100644
  .It Tunnel
  .It TunnelDevice
 +.It U2FMode
+ .It UpdateHostKeys
  .It UsePrivilegedPort
  .It User
- .It UserKnownHostsFile
 diff --git a/ssh.c b/ssh.c
 index 26e9681..dc241ae 100644
 --- a/ssh.c
@@ -1669,36 +1649,6 @@ index 481d001..b6556ef 100644
  #endif
  
  	/* If requested, redirect the logs to the specified logfile. */
-diff --git a/sshd_config.5 b/sshd_config.5
-index fd44abe..7d5cec0 100644
---- a/sshd_config.5
-+++ b/sshd_config.5
-@@ -1293,6 +1293,25 @@ for authentication using
- .Cm TrustedUserCAKeys .
- For more details on certificates, see the CERTIFICATES section in
- .Xr ssh-keygen 1 .
-+.It Cm U2FAuthentication
-+Specifies whether user authentication based on U2F (Universal Second Factor) is allowed. The default is
-+.Dq no .
-+Note that U2F authentication should never be used alone, so specify for example:
-+.Bd -literal -offset indent
-+U2FAuthentication yes
-+AuthenticationMethods pubkey,u2f
-+.Ed
-+.Pp
-+That way, pubkey authentication will be performed and U2F will be required
-+after pubkey authentication was successful. In case the user in question does
-+not have any ssh-u2f lines in their authorized_keys file, the u2f
-+authentication method will just return success.
-+.Pp
-+In order to register a U2F security key, enable this option as outlined above.
-+Then, run
-+.Dq ssh -o U2FMode=registration server.example.net
-+in order to obtain a ssh-u2f line which you can then append to your
-+authorized_keys.
- .It Cm UseDNS
- Specifies whether
- .Xr sshd 8
 diff --git a/sshkey.c b/sshkey.c
 index fdd0c8a..18196ce 100644
 --- a/sshkey.c
