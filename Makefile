@@ -13,7 +13,7 @@ VERSION = $(PACKAGE_VERSION)-$(PATCH_VERSION)
 
 ZLIB_VERSION = 1.2.8-1
 ZLIB_URL = https://github.com/amylum/zlib/releases/download/$(ZLIB_VERSION)/zlib.tar.gz
-ZLIB_TAR = zlib.tar.gz
+ZLIB_TAR = /tmp/zlib.tar.gz
 ZLIB_DIR = /tmp/zlib
 ZLIB_PATH = --with-zlib=$(ZLIB_DIR)/usr
 
