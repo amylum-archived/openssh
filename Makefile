@@ -49,6 +49,7 @@ deps:
 build: submodule deps
 	rm -rf $(BUILD_DIR)
 	cp -R upstream $(BUILD_DIR)
+	patch -d $(BUILD_DIR) -p1 < patches/ssl_dir.patch
 	cd $(BUILD_DIR) && autoheader && autoconf
 	cd $(BUILD_DIR) && CC=musl-gcc CFLAGS="$(CFLAGS)" ./configure $(PATH_FLAGS) $(CONF_FLAGS) $(ZLIB_PATH) $(OPENSSL_PATH)
 	cd $(BUILD_DIR) && make install
