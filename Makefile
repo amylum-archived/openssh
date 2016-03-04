@@ -17,7 +17,7 @@ ZLIB_TAR = /tmp/zlib.tar.gz
 ZLIB_DIR = /tmp/zlib
 ZLIB_PATH = --with-zlib=$(ZLIB_DIR)/usr
 
-OPENSSL_VERSION = 1.0.2f-5
+OPENSSL_VERSION = 1.0.2g-6
 OPENSSL_URL = https://github.com/amylum/openssl/releases/download/$(OPENSSL_VERSION)/openssl.tar.gz
 OPENSSL_TAR = /tmp/openssl.tar.gz
 OPENSSL_DIR = /tmp/openssl
