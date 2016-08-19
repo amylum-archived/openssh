@@ -16,7 +16,7 @@ package do
     'with-privset-user': 'nobody',
     'with-zlib': "#{dep['zlib']}/usr",
     'with-ssl-dir': "#{dep['openssl']}/usr"
-  (
+  )
 
   version do
     File.readlines('contrib/suse/openssh.spec').grep(/^Version/).first.split.last
