@@ -31,5 +31,4 @@ build do
   configure
   make
   install
-  rm 'usr/share/doc'
 end
