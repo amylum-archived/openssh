@@ -2,12 +2,12 @@ package do
   name 'openssh'
   org 'amylum'
 
-  deps {
+  deps(
     zlib: '1.2.8-4',
     openssl: '1.0.2h-7'
-  }
+  )
 
-  flags {
+  flags(
     prefix: '/usr',
     sbindir: '/usr/bin',
     sysconfdir: '/etc/ssh',
@@ -16,7 +16,7 @@ package do
     :'with-privset-user': 'nobody',
     :'with-zlib': "#{dep['zlib']}/usr",
     :'with-ssl-dir': "#{dep['openssl']}/usr"
-  }
+  (
 
   version do
     File.readlines('contrib/suse/openssh.spec').grep(/^Version/).first.split.last
