@@ -1,37 +1,35 @@
-package do
-  name 'openssh'
-  org 'amylum'
+name 'openssh'
+org 'amylum'
 
-  deps(
-    zlib: '1.2.8-4',
-    openssl: '1.0.2h-7'
-  )
+deps(
+  zlib: '1.2.8-4',
+  openssl: '1.0.2h-7'
+)
 
-  flags(
-    prefix: '/usr',
-    sbindir: '/usr/bin',
-    sysconfdir: '/etc/ssh',
-    libexecdir: '/usr/lib/ssh',
-    'with-pid-dir': '/run',
-    'with-privset-user': 'nobody',
-    'with-zlib': "#{dep['zlib']}/usr",
-    'with-ssl-dir': "#{dep['openssl']}/usr"
-  )
+flags(
+  prefix: '/usr',
+  sbindir: '/usr/bin',
+  sysconfdir: '/etc/ssh',
+  libexecdir: '/usr/lib/ssh',
+  'with-pid-dir': '/run',
+  'with-privset-user': 'nobody',
+  'with-zlib': "#{dep['zlib']}/usr",
+  'with-ssl-dir': "#{dep['openssl']}/usr"
+)
 
-  version do
-    File.readlines('contrib/suse/openssh.spec').grep(/^Version/).first.split.last
-  end
+version do
+  File.readlines('contrib/suse/openssh.spec').grep(/^Version/).first.split.last
+end
 
-  license 'LICENCE'
+license 'LICENCE'
 
-  patch 'ssl_dir.patch'
+patch 'ssl_dir.patch'
 
-  build do
-    run 'autoheader'
-    run 'autoconf'
-    configure
-    make
-    install
-    rm '/usr/share/doc'
-  end
+build do
+  run 'autoheader'
+  run 'autoconf'
+  configure
+  make
+  install
+  rm '/usr/share/doc'
 end
