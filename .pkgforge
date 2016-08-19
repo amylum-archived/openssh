@@ -12,10 +12,10 @@ package do
     sbindir: '/usr/bin',
     sysconfdir: '/etc/ssh',
     libexecdir: '/usr/lib/ssh',
-    :'with-pid-dir': '/run',
-    :'with-privset-user': 'nobody',
-    :'with-zlib': "#{dep['zlib']}/usr",
-    :'with-ssl-dir': "#{dep['openssl']}/usr"
+    'with-pid-dir': '/run',
+    'with-privset-user': 'nobody',
+    'with-zlib': "#{dep['zlib']}/usr",
+    'with-ssl-dir': "#{dep['openssl']}/usr"
   (
 
   version do
