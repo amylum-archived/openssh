@@ -1,3 +1,6 @@
 [submodule "upstream"]
 	path = upstream
 	url = https://github.com/openssh/openssh-portable.git
+[submodule "meta"]
+	path = meta
+	url = git://github.com/amylum/pkgforge-helper
