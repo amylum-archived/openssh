@@ -32,3 +32,8 @@ build do
   make
   install
 end
+
+test do
+  run 'ssh -V'
+  run 'ssh-keygen -f /tmp/fakekey -N ""'
+end
