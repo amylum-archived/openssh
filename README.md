@@ -1,6 +1,7 @@
 openssh
 ==========
 
+[![Build Status](https://img.shields.io/circleci/project/amylum/openssh.svg)](https://circleci.com/gh/amylum/openssh)
 [![BSD Licensed](http://img.shields.io/badge/license-BSD-green.svg)](https://tldrlegal.com/license/bsd-3-clause-license-(revised))
 
 Package repo for [openssh](http://www.openssh.com/portable.html)
