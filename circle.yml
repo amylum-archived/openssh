@@ -1,6 +1,9 @@
 machine:
   services:
   - docker
+dependencies:
+  override:
+  - git submodule update --init
 test:
   override:
   - make
