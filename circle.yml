@@ -1,9 +1,6 @@
 machine:
   services:
   - docker
-  environment:
-    GIT_AUTHOR_NAME: 'Les Aker'
-    GIT_AUTHOR_EMAIL: 'me@lesaker.org'
 dependencies:
   override:
   - git submodule update --init
