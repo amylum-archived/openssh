@@ -7,7 +7,6 @@ machine:
 dependencies:
   override:
   - git submodule update --init
-  - git pull --tag
 test:
   override:
   - make
