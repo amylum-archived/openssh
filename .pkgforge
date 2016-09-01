@@ -17,10 +17,6 @@ configure_flags(
   'with-ssl-dir': "#{dep('openssl')}/usr"
 )
 
-version do
-  File.readlines('contrib/suse/openssh.spec').grep(/^Version/).first.split.last
-end
-
 license 'LICENCE'
 
 patch 'ssl_dir.patch'
