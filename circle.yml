@@ -10,7 +10,9 @@ dependencies:
 test:
   override:
   - make
-deploy:
+  post:
+  - cp -r pkg/* $CIRCLE_ARTIFACTS/
+deployment:
   release:
     tag: /.*/
     commands:
