@@ -1,4 +1,4 @@
-require 'pkgforge'
+Prospectus.extra_dep('file', 'pkgforge')
 
 item do
   expected do
