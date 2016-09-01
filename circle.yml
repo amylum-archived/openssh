@@ -10,3 +10,8 @@ dependencies:
 test:
   override:
   - make
+deploy:
+  release:
+    tag: /.*/
+    commands:
+    - make release
