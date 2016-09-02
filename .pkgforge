@@ -1,7 +1,7 @@
 name 'openssh'
 org 'amylum'
 
-license 'LICENCE'
+licenses 'LICENCE'
 
 deps(
   zlib: '1.2.8-4',
