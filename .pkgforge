@@ -5,7 +5,7 @@ licenses 'LICENCE'
 
 deps(
   zlib: '1.2.8-4',
-  openssl: '1.0.2h-7'
+  openssl: '1.0.2j-1'
 )
 
 configure_flags(
