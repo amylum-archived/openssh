@@ -4,7 +4,7 @@ org 'amylum'
 licenses 'LICENCE'
 
 deps(
-  zlib: '1.2.10.1',
+  zlib: '1.2.10-1',
   openssl: '1.0.2j-3'
 )
 
