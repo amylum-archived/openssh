@@ -33,6 +33,6 @@ end
 
 test do
   run 'ssh -V'
-  File.unlink '/tmp/fakekey'
+  File.unlink('/tmp/fakekey') if File.exist? '/tmp/fakekey'
   run 'ssh-keygen -f /tmp/fakekey -N ""'
 end
