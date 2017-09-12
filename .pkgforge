@@ -11,6 +11,14 @@ deps(
   openssl: {
     version: '1.0.2l-1',
     checksum: '6a46a1a65aa5cadc69a2b01e3ef8fa0a38353f3f7b86c1a772ab5156dd5b2264'
+  },
+  libseccomp: {
+    version: '2.3.2-6',
+    checksum: 'acb8ee342c58bb98e211f7ec418bce86a1d415260559116ae9a6300e6bf8f3d9'
+  },
+  'linux-api-headers': {
+    version: '4.13-1',
+    checksum: '50b2288419fe132c061bdf3d297293011929abc1092ffaa5e523ad6549b4f5fa'
   }
 )
 
@@ -22,9 +30,11 @@ configure_flags(
   'with-pid-dir': '/run',
   'with-privsep-user': 'nobody',
   'with-zlib': "#{dep('zlib')}/usr",
-  'with-ssl-dir': "#{dep('openssl')}/usr"
+  'with-ssl-dir': "#{dep('openssl')}/usr",
+  'with-sandbox': 'seccomp_filter'
 )
 
+cflags
 harden
 
 patch 'ssl_dir.patch'
