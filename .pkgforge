@@ -31,13 +31,19 @@ configure_flags(
   'with-privsep-user': 'nobody',
   'with-zlib': "#{dep('zlib')}/usr",
   'with-ssl-dir': "#{dep('openssl')}/usr",
-  'with-sandbox': 'seccomp_filter'
+  'with-sandbox': 'seccomp_filter',
+  'without-openssl-header-check': nil,
+  build: 'x86_64-pc-linux-gnu',
+  host: 'x86_64-unknown-linux-gnu'
 )
+remove_linker_archives
+remove_pkgconfig_files
 
 cflags
 harden
 
 patch 'ssl_dir.patch'
+patch 'openssl-1.1.0.patch'
 
 build do
   run 'autoheader'
