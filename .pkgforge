@@ -42,8 +42,7 @@ remove_pkgconfig_files
 cflags
 harden
 
-patch 'ssl_dir.patch'
-patch 'openssl-1.1.0.patch'
+patch 'openssl-1.1.patch'
 
 build do
   run 'autoheader'
