@@ -9,16 +9,16 @@ deps(
     checksum: '5596e2d39ef98e2323ac415f50afa71a433ed65c23e8d1f2723f711f5ffb4f32'
   },
   openssl: {
-    version: '1.1.0h-3',
-    checksum: 'c9d6db39ea09dd8051cb36c42f85eb8043ce580c6132caa0506a839d88dea275'
+    version: '1.1.0i-1',
+    checksum: '62004bc61c94107134eb16fdb405b36df2246f303bcd58f5d7df87025a6d7804'
   },
   libseccomp: {
-    version: '2.3.3-4',
-    checksum: '4cfe1658757993f588e0310ea7d68d5db8756e5ec93adc5502b6455e708d22b9'
+    version: '2.3.3-5',
+    checksum: '21d8e5462ad970bbda98214589323bc16d5d9f1c0e025a6008a773996b33e58d'
   },
   'linux-api-headers': {
-    version: '4.17-1',
-    checksum: 'b2526797b346c73dc44da02dc16def8eb2059c02bd015f76497e9babadc1a44f'
+    version: '4.18-1',
+    checksum: 'edc8dab0e57cb3868867a86d501eb5f314ad00d87e50957c3ffae113ce967298'
   }
 )
 
