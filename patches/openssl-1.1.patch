@@ -61,7 +61,7 @@ index a72682a8..5b994dc4 100644
  
  int
 diff --git a/dh.c b/dh.c
-index ac8d5a0a..2e69c0ce 100644
+index ac8d5a0a..86dad5b8 100644
 --- a/dh.c
 +++ b/dh.c
 @@ -216,14 +216,15 @@ choose_dh(int min, int wantbits, int max)
@@ -123,7 +123,7 @@ index ac8d5a0a..2e69c0ce 100644
  	    need > INT_MAX / 2 || 2 * need > pbits)
  		return SSH_ERR_INVALID_ARGUMENT;
  	if (need < 256)
-@@ -275,12 +279,13 @@ dh_gen_key(DH *dh, int need)
+@@ -275,11 +279,11 @@ dh_gen_key(DH *dh, int need)
  	 * Pollard Rho, Big step/Little Step attacks are O(sqrt(n)),
  	 * so double requested need here.
  	 */
@@ -131,17 +131,16 @@ index ac8d5a0a..2e69c0ce 100644
 -	if (DH_generate_key(dh) == 0 ||
 -	    !dh_pub_is_valid(dh, dh->pub_key)) {
 -		BN_clear_free(dh->priv_key);
+-		dh->priv_key = NULL;
 +	DH_set_length(dh, MINIMUM(need * 2, pbits - 1));
 +	if (DH_generate_key(dh) == 0)
- 		dh->priv_key = NULL;
- 		return SSH_ERR_LIBCRYPTO_ERROR;
++		return SSH_ERR_LIBCRYPTO_ERROR;
 +	DH_get0_key(dh, &pub_key, NULL);
 +	if (!dh_pub_is_valid(dh, pub_key)) {
-+		return SSH_ERR_LIBCRYPTO_ERROR;
+ 		return SSH_ERR_LIBCRYPTO_ERROR;
  	}
  	return 0;
- }
-@@ -289,12 +294,16 @@ DH *
+@@ -289,12 +293,16 @@ DH *
  dh_new_group_asc(const char *gen, const char *modulus)
  {
  	DH *dh;
@@ -160,7 +159,7 @@ index ac8d5a0a..2e69c0ce 100644
  		return NULL;
  	}
  	return (dh);
-@@ -312,8 +321,7 @@ dh_new_group(BIGNUM *gen, BIGNUM *modulus)
+@@ -312,8 +320,7 @@ dh_new_group(BIGNUM *gen, BIGNUM *modulus)
  
  	if ((dh = DH_new()) == NULL)
  		return NULL;
