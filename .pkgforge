@@ -13,8 +13,8 @@ deps(
     checksum: '9a0aec136778a436d542ef037914e0b7a572c9b6fe4c4f826e5f1a4531ce6799'
   },
   libseccomp: {
-    version: '2.3.3-8',
-    checksum: 'acd7430dcf45a155d646a871de117807174657e8361b76135b992e1bc3fce5e8'
+    version: '2.4.0-1',
+    checksum: 'b987a5c738b8d2913fcbdb65d4682a64802d290eea5df9185b055bf21e4fca90'
   },
   'linux-api-headers': {
     version: '5.0-1',
